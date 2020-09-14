@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service class="LxRmp\Subscriber\RiskManagement" id="lx_rmp.risk">
+            <argument type="service" id="lx_rmp.component.connector" />
+            <argument type="service" id="lx_rmp.service.payment" />
+            <tag name="shopware.event_subscriber" />
+        </service>
+        <service class="LxRmp\Services\PaymentService" id="lx_rmp.service.payment">
+            <argument type="service" id="models" />
+        </service>
+        <service class="LxRmp\Components\Connector" id="lx_rmp.component.connector">
+            <argument type="service" id="http_client"/>
+            <argument type="service" id="lx_rmp.logger" />
+        </service>
+        <service class="LxRmp\Components\Data\QuoteModel" id="lx_rmp.component.quotemodel">
+            <argument type="service" id="models"/>
+        </service>
+        <service id="lx_rmp.backend_controller_lx_rmp_validate" class="LxRmp\Controller\Backend\LxRmpValidate">
+            <argument type="service" id="lx_rmp.component.connector" />
+            <tag name="shopware.controller" module="backend" controller="LxRmpValidate"/>
+        </service>
+    </services>
+</container>

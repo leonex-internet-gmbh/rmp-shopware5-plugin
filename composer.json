@@ -1,0 +1,15 @@
+{
+  "name": "leonex/sw5-module-rmp-connector",
+  "keywords": ["shopware", "credit rating", "credit check", "fraud protection", "leonex", "rmp"],
+  "description": "This Extension integrates a credit check and more made by the LEONEX Risk Management Platform into your order process. Extensive configuration and evaluation options is provided in the Platform",
+  "license": [
+    "OSL-3.0"
+  ],
+  "type": "shopware-plugin",
+  "extra": {
+    "installer-name": "LxRmp"
+  },
+  "require": {
+    "php": ">=7.2"
+  }
+}
