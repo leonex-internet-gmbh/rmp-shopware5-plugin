@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/5.2/engine/Shopware/Components/Plugin/schema/config.xsd">
+    <label>API-Configuration</label>
+    <elements>
+        <element required="true" type="text" scope="locale">
+            <name>apiKey</name>
+            <label lang="de">API-Schlüssel</label>
+            <label lang="en">API-Key</label>
+            <value></value>
+            <description>Sie können Ihren API-Schlüssel unter Webshops -> General Settings -> API-Schlüssel vorfinden.</description>
+        </element>
+        <element type="select" >
+            <name>timeOfVerification</name>
+            <label lang="de">Zeit der Überprüfung</label>
+            <label lang="en">Time of verification</label>
+            <store>
+                <option>
+                    <value>0</value>
+                    <label lang="de">Vor Auswahl der Bezahlmethode</label>
+                    <label lang="en">Before selecting the payment method</label>
+                </option>
+                <option>
+                    <value>1</value>
+                    <label lang="de">Nach Auswahl der Bezahlmethode</label>
+                    <label lang="en">After selecting the payment method</label>
+                </option>
+            </store>
+        </element>
+        <element required="true" type="text" scope="locale">
+            <name>apiUrl</name>
+            <label lang="de">API-Url</label>
+            <label lang="en">API-Url</label>
+            <value>https://rmp.leonex.de/api/creditrating/rate</value>
+        </element>
+        <element type="button">
+            <name>checkApi</name>
+            <label lang="de">API-Daten überprüfen</label>
+            <label lang="en">validate api credentials</label>
+            <options>
+                <handler>
+                    <![CDATA[
+                    function() {
+                      Ext.Ajax.request({
+                        url: 'LxRmpValidate/validate',
+                        success: function (response) {
+                          Shopware.Msg.createGrowlMessage(response.statusText, response.responseText)
+                        },
+                        failure: function (response) {
+                          Shopware.Msg.createGrowlMessage(response.statusText, response.responseText)
+                        }
+                      });
+                    }
+                    ]]>
+                </handler>
+            </options>
+        </element>
+    </elements>
+</config>
