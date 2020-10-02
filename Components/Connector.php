@@ -44,7 +44,7 @@ class Connector {
      * @throws \Exception
      * @return Response
      */
-    public function getRating(array $data = null):Response
+    public function getRating(array $data = null):?Response
     {
         $quote = $this->getQuote();
         if($this->justifyInterest($quote)){
