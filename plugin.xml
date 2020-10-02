@@ -3,10 +3,14 @@
     <label lang="de">Risk Management Plattform</label>
     <label lang="en">Risk Management Platform</label>
 
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <link>https://www.leonex.de/</link>
     <author>LEONEX Internet GmbH</author>
     <compatibility minVersion="5.2.0" />
+        <changelog version="1.0.2">
+        <changes lang="de">Bugfix für bestimmte Fehlercodes aus RMP Software</changes>
+        <changes lang="en">Bugfix for specific Error-Codes from the RMP Software</changes>
+    </changelog>
     <changelog version="1.0.1">
         <changes lang="de">Ändern der Registrierung von Controllern</changes>
         <changes lang="en">Changed Controller registration</changes>
