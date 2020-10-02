@@ -4,7 +4,6 @@ namespace LxRmp\Components;
 use LxRmp\Components\Data\Quote;
 use LxRmp\Components\Data\Response;
 use LxRmp\LxRmp;
-use Monolog\Logger;
 use Shopware\Components\HttpClient\HttpClientInterface;
 
 /**
@@ -24,21 +23,13 @@ class Connector {
     protected $client;
 
     /**
-     * @var Logger
-     */
-    protected $logger;
-
-    /**
      * Connector constructor.
      * @param HttpClientInterface $client
-     * @param Logger $logger
      */
     public function __construct(
-        HttpClientInterface $client,
-        Logger $logger
+        HttpClientInterface $client
     ){
         $this->client = $client;
-        $this->logger = $logger;
     }
 
     /**
@@ -71,7 +62,6 @@ class Connector {
                 $this->storeHash($quote->getQuoteHash());
                 $this->storeResponse($response);
             }catch (\Exception $exception) {
-                $this->logger->addError($exception->getMessage());
             }
         }
         return $this->loadResponse();
@@ -195,11 +185,8 @@ class Connector {
                 $this->buildHeader(),
                 $data
             );
-            $this->logger->addInfo('<pre>'.print_r($response->getHeaders().'</pre>'));
-            $this->logger->addInfo('Status-Code: '. $response->getStatusCode());
             return $response->getStatusCode();
         }catch (\Exception $exception) {
-            $this->logger->addError($exception->getMessage());
         }
         return null;
     }

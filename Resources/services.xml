@@ -15,14 +15,9 @@
         </service>
         <service class="LxRmp\Components\Connector" id="lx_rmp.component.connector">
             <argument type="service" id="http_client"/>
-            <argument type="service" id="lx_rmp.logger" />
         </service>
         <service class="LxRmp\Components\Data\QuoteModel" id="lx_rmp.component.quotemodel">
             <argument type="service" id="models"/>
-        </service>
-        <service id="lx_rmp.backend_controller_lx_rmp_validate" class="LxRmp\Controller\Backend\LxRmpValidate">
-            <argument type="service" id="lx_rmp.component.connector" />
-            <tag name="shopware.controller" module="backend" controller="LxRmpValidate"/>
         </service>
     </services>
 </container>

@@ -1,11 +1,9 @@
 <?php
 
-namespace LxRmp\Controller\Backend;
-
 use LxRmp\Components\Connector;
 use Symfony\Component\HttpFoundation\Response;
 
-class LxRmpValidate extends \Shopware_Controllers_Backend_ExtJs
+class Shopware_Controllers_Backend_LxRmpValidate extends Shopware_Controllers_Backend_ExtJs
 {
     /**
      * @var Connector
@@ -13,23 +11,14 @@ class LxRmpValidate extends \Shopware_Controllers_Backend_ExtJs
     protected $connector;
 
     /**
-     * LxRmpValidate constructor.
-     * @param Connector $connector
-     */
-    public function __construct(Connector $connector)
-    {
-        $this->connector = $connector;
-
-        parent::__construct();
-    }
-
-    /**
      * Sucess if Bad-Request -> empty Body, but authorized [400]
      * Fail if HTTP_UNAUTHORIZED [401]
      */
     public function validateAction():void
     {
-        $response = $this->connector->validateConnection();
+        /** @var Connector $connector */
+        $connector = Shopware()->Container()->get('lx_rmp.component.connector');
+        $response = $connector->validateConnection();
         $this->View()->assign('response', 'Something went wrong, please see logfiles!');
 
         if($response !== null){
