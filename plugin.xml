@@ -3,10 +3,14 @@
     <label lang="de">Risk Management Plattform</label>
     <label lang="en">Risk Management Platform</label>
 
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <link>https://www.leonex.de/</link>
     <author>LEONEX Internet GmbH</author>
     <compatibility minVersion="5.2.0" />
+    <changelog version="1.0.1">
+        <changes lang="de">Ändern der Registrierung von Controllern</changes>
+        <changes lang="en">Changed Controller registration</changes>
+    </changelog>
     <changelog version="1.0.0">
         <changes lang="de">Bereitstellen der Grundfunktionalitäten</changes>
         <changes lang="en">Initial plugin release</changes>
