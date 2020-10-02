@@ -7,7 +7,7 @@
     <link>https://www.leonex.de/</link>
     <author>LEONEX Internet GmbH</author>
     <compatibility minVersion="5.2.0" />
-        <changelog version="1.0.2">
+    <changelog version="1.0.2">
         <changes lang="de">Bugfix für bestimmte Fehlercodes aus RMP Software</changes>
         <changes lang="en">Bugfix for specific Error-Codes from the RMP Software</changes>
     </changelog>
