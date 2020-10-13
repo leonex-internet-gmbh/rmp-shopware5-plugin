@@ -28,4 +28,18 @@ class PaymentService
         return null;
     }
 
+    public function isHarmless(int $paymentId):bool
+    {
+        $queryBuilder = $this->entityManager->getDBALQueryBuilder();
+        $statement = $queryBuilder->select('harmless')
+            ->from('s_core_paymentmeans_attributes')
+            ->where('paymentmeanID = :id')
+            ->setParameter('id', $paymentId)
+            ->execute();
+        $payment = $statement->fetch();
+        if($payment && array_key_exists('harmless', $payment)){
+            return (bool)$payment['harmless'];
+        }
+        return false;
+    }
 }
