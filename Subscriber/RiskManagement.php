@@ -46,10 +46,8 @@ class RiskManagement implements SubscriberInterface
 
     /**
      * @param \Enlight_Event_EventArgs $args
-     * @return bool
-     * @throws \Exception
      */
-    public function onFilterPaymentMeans(\Enlight_Event_EventArgs $args)
+    public function onFilterPaymentMeans(\Enlight_Event_EventArgs $args):void
     {
         $timeOfVerification =  $this->getTimeOfVerification();
         if($timeOfVerification === 0){
@@ -74,7 +72,7 @@ class RiskManagement implements SubscriberInterface
         }
     }
 
-    public function onSavePayment(\Enlight_Event_EventArgs $eventArgs)
+    public function onSavePayment(\Enlight_Event_EventArgs $eventArgs):void
     {
         $timeOfVerification =  $this->getTimeOfVerification();
         /** @var \Enlight_Controller_Action $controller */
@@ -85,22 +83,24 @@ class RiskManagement implements SubscriberInterface
             $timeOfVerification === 1
         ){
             $paymentId = $controller->Request()->getPost('payment');
-            $paymentName = $this->paymentService->getPaymentByID($paymentId);
-            if($paymentName !==  null){
-                /** @var Response $response */
-                try{
-                    $response = $this->connector->getRating();
-                }catch (\Exception $exception){
-                    $response = null;
-                }
-                if($response !== null && $response->wasSuccessful()){
-                    if(!$response->filterPayments($paymentName)){
-                        Shopware()->Session()->showError = true;
-                        $controller->redirect([
-                            'controller' => 'checkout',
-                            'action' => 'shippingPayment',
-                        ]);
-                        return;
+            if(!$this->paymentService->isHarmless($paymentId)){
+                $paymentName = $this->paymentService->getPaymentByID($paymentId);
+                if($paymentName !==  null){
+                    /** @var Response $response */
+                    try{
+                        $response = $this->connector->getRating();
+                    }catch (\Exception $exception){
+                        $response = null;
+                    }
+                    if($response !== null && $response->wasSuccessful()){
+                        if(!$response->filterPayments($paymentName)){
+                            Shopware()->Session()->showError = true;
+                            $controller->redirect([
+                                'controller' => 'checkout',
+                                'action' => 'shippingPayment',
+                            ]);
+                            return;
+                        }
                     }
                 }
             }
@@ -113,29 +113,31 @@ class RiskManagement implements SubscriberInterface
         }
         if( $controller->Request()->getActionName() === 'finish' ){
             $userData = Shopware()->Modules()->Admin()->sGetUserData();
-            $paymentName = $userData['additional']['payment']['name'];
-            if($paymentName !==  null){
-                /** @var Response $response */
-                try{
-                    $response = $this->connector->getRating();
-                }catch (\Exception $exception){
-                    $response = null;
-                }
-                if($response !== null && $response->wasSuccessful()){
-                    if(!$response->filterPayments($paymentName)){
-                        Shopware()->Session()->showError = true;
-                        $controller->redirect([
-                            'controller' => 'checkout',
-                            'action' => 'shippingPayment',
-                        ]);
-                        return;
+            if(!$this->paymentService->isHarmless($userData['additional']['payment']['id'])){
+                $paymentName = $userData['additional']['payment']['name'];
+                if($paymentName !==  null){
+                    /** @var Response $response */
+                    try{
+                        $response = $this->connector->getRating();
+                    }catch (\Exception $exception){
+                        $response = null;
+                    }
+                    if($response !== null && $response->wasSuccessful()){
+                        if(!$response->filterPayments($paymentName)){
+                            Shopware()->Session()->showError = true;
+                            $controller->redirect([
+                                'controller' => 'checkout',
+                                'action' => 'shippingPayment',
+                            ]);
+                            return;
+                        }
                     }
                 }
             }
         }
     }
 
-    public function onSavePaymentAccount(\Enlight_Event_EventArgs $eventArgs)
+    public function onSavePaymentAccount(\Enlight_Event_EventArgs $eventArgs):void
     {
         $timeOfVerification =  $this->getTimeOfVerification();
         /** @var \Enlight_Controller_Action $controller */
@@ -145,24 +147,31 @@ class RiskManagement implements SubscriberInterface
             $controller->Request()->getActionName() === 'savePayment' &&
             $timeOfVerification === 1
         ){
-            $paymentId = $controller->Request()->getPost('sPayment');
-            $paymentName = $this->paymentService->getPaymentByID($paymentId);
-            if($paymentName !==  null){
-                /** @var Response $response */
-                try{
-                    $response = $this->connector->getRating();
-                }catch (\Exception $exception){
-                    $response = null;
-                }
-                if($response !== null && $response->wasSuccessful()){
-                    if(!$response->filterPayments($paymentName)){
-                        Shopware()->Session()->showError = true;
+            $post = $controller->Request()->getPost('register');
+            if(is_array($post) && array_key_exists('payment', $post)){
+                $paymentId = (int)$post['payment'];
+            }else{
+                $paymentId = null;
+            }
+            if(!$this->paymentService->isHarmless($paymentId)){
+                $paymentName = $this->paymentService->getPaymentByID($paymentId);
+                if($paymentName !==  null){
+                    /** @var Response $response */
+                    try{
+                        $response = $this->connector->getRating();
+                    }catch (\Exception $exception){
+                        $response = null;
+                    }
+                    if($response !== null && $response->wasSuccessful()){
+                        if(!$response->filterPayments($paymentName)){
+                            Shopware()->Session()->showError = true;
 
-                        $controller->redirect([
-                            'controller' => 'account',
-                            'action' => 'payment',
-                        ]);
-                        return;
+                            $controller->redirect([
+                                'controller' => 'account',
+                                'action' => 'payment',
+                            ]);
+                            return;
+                        }
                     }
                 }
             }

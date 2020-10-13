@@ -19,5 +19,13 @@
         <service class="LxRmp\Components\Data\QuoteModel" id="lx_rmp.component.quotemodel">
             <argument type="service" id="models"/>
         </service>
+        <service class="LxRmp\Attribute\AbstractAttribute" id="lx_rmp.attribute.abstract" abstract="true" parent="lx_rmp.util.abstract.handler"/>
+        <service class="LxRmp\Util\AbstractHandler" id="lx_rmp.util.abstract.handler" abstract="true">
+            <argument type="service" id="models"/>
+            <argument type="service" id="dbal_connection" />
+        </service>
+        <service class="LxRmp\Attribute\Payment" id="lx_rmp.attribute.payment" parent="lx_rmp.attribute.abstract">
+            <tag name="shopware.event_subscriber"/>
+        </service>
     </services>
 </container>
